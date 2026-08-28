@@ -17,3 +17,14 @@ go run .   // to populate machine.1.log file
 grep -n "Hello" machine.1.log
 ```
 
+Build and run client and server files:
+```
+./build.sh
+./bin/server  // default port 8080
+./bin/client  // default port 8080
+
+./bin/server -port 3001
+./bin/client -port 3001
+```
+
+
