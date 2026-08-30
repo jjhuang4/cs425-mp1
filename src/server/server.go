@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cs425/mp1/query"
 	"errors"
 	"flag"
 	"fmt"
@@ -25,13 +26,29 @@ func (d *Dummy) Greet(arg *string, reply *string) error {
 
 func main() {
 	// register type / method here
-	dummy := new(Dummy)
-	rpc.Register(dummy)
+	// dummy := new(Dummy)
+	// rpc.Register(dummy)
 
+	// var port int
+	// flag.IntVar(&port, "port", 8080, "Port to listen on")
+	// flag.Parse()
+
+	// conn_path := fmt.Sprintf(":%d", port)
+	// listener, err := net.Listen("tcp", conn_path)
+	// if err != nil {
+	// 	fmt.Println("Error occurred listening for connection:", err)
+	// 	return
+	// }
+	// defer listener.Close()
+
+	// fmt.Println("Listening on port", port)
+	// rpc.Accept(listener)
+
+	query := new(query.Query)
+	rpc.Register(query)
 	var port int
 	flag.IntVar(&port, "port", 8080, "Port to listen on")
 	flag.Parse()
-
 	conn_path := fmt.Sprintf(":%d", port)
 	listener, err := net.Listen("tcp", conn_path)
 	if err != nil {
@@ -42,4 +59,5 @@ func main() {
 
 	fmt.Println("Listening on port", port)
 	rpc.Accept(listener)
+
 }
