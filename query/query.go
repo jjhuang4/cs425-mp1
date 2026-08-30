@@ -25,6 +25,8 @@ type Reply struct {
 	Reply []byte
 }
 
+var Vm_to_ip = map[string]string{"vm1": "127.0.0.1:8080", "vm2": "127.0.0.1:8080"}
+
 func (query *Query) Grep(args []string, reply *Reply) error {
 
 	fmt.Println(args)
