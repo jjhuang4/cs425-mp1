@@ -15,7 +15,13 @@ import (
 
 // var vm_to_ip = map[string]string{"vm1": "127.0.0.1", "vm2": "127.0.0.1"}
 
-func call(vm, ip string) error {
+type GrepArgs struct {
+	Flags   string
+	Pattern string
+	File    *string
+}
+
+func grepCall(vm, ip string) error {
 
 	fmt.Printf("Processing VM at: %s", ip)
 	client, err := rpc.Dial("tcp", string(ip))
@@ -26,14 +32,21 @@ func call(vm, ip string) error {
 	defer client.Close()
 	var reply query.Reply
 
-	fmt.Println(os.Args)
-	err = client.Call("Query.Grep", os.Args[3:], &reply)
+	grepArgs := &query.GrepArgs{
+		Flags:   os.Args[2],
+		Pattern: os.Args[3],
+		File:    &os.Args[4],
+	}
+	fmt.Printf("\nArgs provided to Grep command \nFlags: %s\nPattern: %s\nFilepath: %s",
+		grepArgs.Flags, grepArgs.Pattern, *grepArgs.File)
+	err = client.Call("Query.Grep", grepArgs, &reply)
+	// err = client.Call("Query.Grep", os.Args[3:], &reply)
 
 	if err != nil {
 		fmt.Println("Error occurred calling server method with RPC:", err)
 		return err
 	}
-	fmt.Print("Reply from server: ", string(reply.Reply))
+	fmt.Print("\nReply from server: \n", string(reply.Reply))
 	return nil
 }
 
@@ -53,11 +66,12 @@ func main() {
 	for vm, ip := range query.Vm_to_ip {
 
 		if vm == current_vm {
+			fmt.Println("Skipping current VM:", vm)
 			continue
 		}
 
 		wg.Go(func() {
-			call(vm, ip)
+			grepCall(vm, ip)
 		})
 	}
 	wg.Wait()

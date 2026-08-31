@@ -19,6 +19,16 @@ grep -n "Hello" machine.1.log
 
 Build and run client and server files:
 ```
+go run ./src/server/server.go vm1
+go run ./src/client/client.go vm1 -n "Hello" logs/machine.1.log
+
+// You can also use wildcard
+go run ./src/client/client.go vm1 -n "Hello" logs/machine.*.log
+```
+
+
+Old/deprecated
+```
 ./build.sh
 ./bin/server  // default port 8080
 ./bin/client  // default port 8080
