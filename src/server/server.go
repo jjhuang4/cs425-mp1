@@ -1,11 +1,12 @@
 package main
 
 import (
+	"cs425/mp1/query"
 	"errors"
-	"flag"
 	"fmt"
 	"net"
 	"net/rpc"
+	"os"
 	"os/exec"
 )
 
@@ -48,24 +49,19 @@ func (g *GrepRequest) Grep(args *GrepRequest, reply *GrepResponse) error {
 
 func main() {
 	// register type / method here
-	dummy := new(Dummy)
-	rpc.Register(dummy)
 
-	grep := new(GrepRequest)
-	rpc.Register(grep)
-
-	var port int
-	flag.IntVar(&port, "port", 8080, "Port to listen on")
-	flag.Parse()
-
-	conn_path := fmt.Sprintf(":%d", port)
-	listener, err := net.Listen("tcp", conn_path)
+	queryObj := new(query.Query)
+	rpc.Register(queryObj)
+	curVM := os.Args[1]
+	curIP := query.Vm_to_ip[curVM]
+	listener, err := net.Listen("tcp", curIP)
 	if err != nil {
 		fmt.Println("Error occurred listening for connection:", err)
 		return
 	}
 	defer listener.Close()
 
-	fmt.Println("Listening on port", port)
+	// fmt.Println("Listening on port", port)
 	rpc.Accept(listener)
+
 }
