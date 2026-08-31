@@ -27,4 +27,4 @@ Build and run client and server files:
 ./bin/client -port 3001
 ```
 
-
+Usage example: go run client.go vm1 grep -rn  Hello ../../tests/*.log
