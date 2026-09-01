@@ -1,8 +1,8 @@
 package main
 
 import (
+	"cs425/mp1/logger"
 	"cs425/mp1/query"
-	"fmt"
 	"net"
 	"net/rpc"
 	"os"
@@ -15,6 +15,7 @@ import (
 
 func main() {
 	// register type / method here
+	logger.Init()
 
 	queryObj := new(query.Query)
 	rpc.Register(queryObj)
@@ -22,11 +23,12 @@ func main() {
 	curIP := query.Vm_to_ip[curVM]
 	listener, err := net.Listen("tcp", curIP)
 	if err != nil {
-		fmt.Println("Error occurred listening for connection:", err)
+		logger.Server.Error("Error occurred listening for connection:" + err.Error())
 		return
 	}
 
+	logger.Server.Info("Listening on port: " + curIP)
+	// fmt.Println("Listening on port", curIP)
 	rpc.Accept(listener)
-	fmt.Println("Listening on port", curIP)
 	defer listener.Close()
 }

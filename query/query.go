@@ -10,7 +10,6 @@ package query
 //		}
 //	}
 import (
-	"fmt"
 	"os/exec"
 )
 
@@ -35,7 +34,6 @@ var Vm_to_ip = map[string]string{"vm1": "127.0.0.1:8080", "vm2": "127.0.0.1:8080
 
 // func (query *Query) Grep(args []string, reply *Reply) error {
 func (query *Query) Grep(args *GrepArgs, reply *Reply) error {
-	fmt.Println(args)
 	// cmd := exec.Command("grep", args...)
 	cmd := exec.Command("grep", args.Flags, args.Pattern)
 
@@ -45,7 +43,6 @@ func (query *Query) Grep(args *GrepArgs, reply *Reply) error {
 	out, err := cmd.Output()
 
 	if err != nil {
-		fmt.Printf("error when grep: %v", err)
 		return err
 	}
 	reply.Reply = out
