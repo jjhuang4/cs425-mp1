@@ -1,0 +1,7 @@
+time=2026-08-31T22:03:55.428-05:00 level=INFO msg="Listening on port: 127.0.0.1:8080" server.component=SERVER
+time=2026-08-31T22:04:17.140-05:00 level=INFO msg="Processing VM at: 127.0.0.1:8080" client.component=CLIENT
+time=2026-08-31T22:04:17.140-05:00 level=INFO msg="Processing VM at: 127.0.0.1:8080" client.component=CLIENT
+time=2026-08-31T22:04:17.143-05:00 level=INFO msg="Args provided to Grep command \nFlags: -n\nPattern: Client\nFilepath: logs/machine.*.log" client.component=CLIENT
+time=2026-08-31T22:04:17.143-05:00 level=INFO msg="Args provided to Grep command \nFlags: -n\nPattern: Client\nFilepath: logs/machine.*.log" client.component=CLIENT
+time=2026-08-31T22:04:17.181-05:00 level=INFO msg="Reply from server: 4:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n5:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n" client.component=CLIENT
+time=2026-08-31T22:04:17.185-05:00 level=INFO msg="Reply from server: 4:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n5:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n" client.component=CLIENT

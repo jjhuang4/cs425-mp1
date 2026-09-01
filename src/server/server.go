@@ -1,11 +1,11 @@
 package main
 
 import (
-	"errors"
-	"flag"
-	"fmt"
+	"cs425/mp1/logger"
+	"cs425/mp1/query"
 	"net"
 	"net/rpc"
+	"os"
 )
 
 // https://pkg.go.dev/net/rpc#ServeConn
@@ -13,33 +13,22 @@ import (
 // func (t *T) MethodName(argType T1, replyType *T2) error
 // (t *T) a method receiver indicating that the method is made to interact with the type T
 
-type Dummy struct{}
-
-func (d *Dummy) Greet(arg *string, reply *string) error {
-	if arg == nil {
-		return errors.New("argument cannot be empty")
-	}
-	*reply = "Greetings"
-	return nil
-}
-
 func main() {
 	// register type / method here
-	dummy := new(Dummy)
-	rpc.Register(dummy)
+	logger.Init()
 
-	var port int
-	flag.IntVar(&port, "port", 8080, "Port to listen on")
-	flag.Parse()
-
-	conn_path := fmt.Sprintf(":%d", port)
-	listener, err := net.Listen("tcp", conn_path)
+	queryObj := new(query.Query)
+	rpc.Register(queryObj)
+	curVM := os.Args[1]
+	curIP := query.Vm_to_ip[curVM]
+	listener, err := net.Listen("tcp", curIP)
 	if err != nil {
-		fmt.Println("Error occurred listening for connection:", err)
+		logger.Server.Error("Error occurred listening for connection:" + err.Error())
 		return
 	}
-	defer listener.Close()
 
-	fmt.Println("Listening on port", port)
+	logger.Server.Info("Listening on port: " + curIP)
+	// fmt.Println("Listening on port", curIP)
 	rpc.Accept(listener)
+	defer listener.Close()
 }
