@@ -73,7 +73,7 @@ func (query *Query) Grep(args *GrepArgs, reply *Reply) error {
 // Function that accepts file to write to, string to write to, and vm
 func (query *Query) FileWrite(args *FileWriteArgs, reply *Reply) error {
 
-	file, err := os.Create(fmt.Sprintf(*args.File, args.VM))
+	file, err := os.Create(fmt.Sprint(*args.File))
 	if err != nil {
 		return err
 	}

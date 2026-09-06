@@ -24,8 +24,9 @@ type GrepArgs struct {
 // Helper function that accepts vm and its ip address as strings. Utilizes GO net/RPC
 // to initiate client-server interaction between the current and target vm. Returns the
 // output of the user-provided grep command from the server.
-func grepCall(vm, ip string) (string, error) {
+func grepCall(vm, flags, pattern, file string) (string, error) {
 
+	ip := query.VM_to_IP[vm]
 	fmt.Printf("Processing VM at: %s", ip)
 	client, err := rpc.Dial("tcp", string(ip))
 	if err != nil {
@@ -36,9 +37,9 @@ func grepCall(vm, ip string) (string, error) {
 	var reply query.Reply
 
 	grepArgs := &query.GrepArgs{
-		Flags:   os.Args[2],
-		Pattern: os.Args[3],
-		File:    &os.Args[4],
+		Flags:   flags,
+		Pattern: pattern,
+		File:    &file,
 	}
 
 	fmt.Printf("\nArgs provided to Grep command \nFlags: %s\nPattern: %s\nFilepath: %s",
@@ -54,7 +55,8 @@ func grepCall(vm, ip string) (string, error) {
 	return string(reply.Reply), nil
 }
 
-func fileWriteCall(testLog, ip, vm, file string) (string, error) {
+func fileWriteCall(testLog, vm, file string) (string, error) {
+	ip := query.VM_to_IP[vm]
 	client, err := rpc.Dial("tcp", string(ip))
 	if err != nil {
 		fmt.Println("Error occurred connecting to server:", err)
@@ -92,15 +94,15 @@ func main() {
 		return
 	}
 	currentVM := os.Args[1]
-	// vm_name := os.Args[1]
-	// vm_to_ip[vm_name]
+	flags := os.Args[2]
+	pattern := os.Args[3]
+	file := os.Args[4]
 
 	// https://gobyexample.com/waitgroups
 	fmt.Println(currentVM)
+
 	var wg sync.WaitGroup
-	var reply string
-	var err error
-	for vm, ip := range query.VM_to_IP {
+	for vm := range query.VM_to_IP {
 
 		// if vm == currentVM {
 		// 	fmt.Println("Skipping current VM:", vm)
@@ -108,7 +110,7 @@ func main() {
 		// }
 
 		wg.Go(func() {
-			reply, err = grepCall(vm, ip)
+			reply, err := grepCall(vm, flags, pattern, file)
 		})
 	}
 	wg.Wait()
