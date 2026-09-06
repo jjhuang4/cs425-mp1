@@ -19,7 +19,7 @@ func main() {
 	queryObj := new(query.Query)
 	rpc.Register(queryObj)
 	curVM := os.Args[1]
-	curIP := query.Vm_to_ip[curVM]
+	curIP := query.VM_to_IP[curVM]
 	listener, err := net.Listen("tcp", curIP)
 	if err != nil {
 		fmt.Println("Error occurred listening for connection:", err)

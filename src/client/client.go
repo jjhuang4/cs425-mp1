@@ -21,13 +21,16 @@ type GrepArgs struct {
 	File    *string
 }
 
-func grepCall(vm, ip string) error {
+// Helper function that accepts vm and its ip address as strings. Utilizes GO net/RPC
+// to initiate client-server interaction between the current and target vm. Returns the
+// output of the user-provided grep command from the server.
+func grepCall(vm, ip string) (string, error) {
 
 	fmt.Printf("Processing VM at: %s", ip)
 	client, err := rpc.Dial("tcp", string(ip))
 	if err != nil {
 		fmt.Println("Error occurred connecting to server:", err)
-		return err
+		return "", err
 	}
 	defer client.Close()
 	var reply query.Reply
@@ -37,17 +40,49 @@ func grepCall(vm, ip string) error {
 		Pattern: os.Args[3],
 		File:    &os.Args[4],
 	}
+
 	fmt.Printf("\nArgs provided to Grep command \nFlags: %s\nPattern: %s\nFilepath: %s",
 		grepArgs.Flags, grepArgs.Pattern, *grepArgs.File)
+
 	err = client.Call("Query.Grep", grepArgs, &reply)
-	// err = client.Call("Query.Grep", os.Args[3:], &reply)
 
 	if err != nil {
 		fmt.Println("Error occurred calling server method with RPC:", err)
-		return err
+		return "", err
 	}
 	fmt.Print("\nReply from server: \n", string(reply.Reply))
-	return nil
+	return string(reply.Reply), nil
+}
+
+func fileWriteCall(testLog, ip, vm, file string) (string, error) {
+	client, err := rpc.Dial("tcp", string(ip))
+	if err != nil {
+		fmt.Println("Error occurred connecting to server:", err)
+		return "", err
+	}
+
+	defer client.Close()
+
+	//Unused
+	var reply query.Reply
+
+	fileWriteArgs := query.FileWriteArgs{
+		TestLog: testLog,
+		File:    &file,
+		VM:      vm,
+	}
+
+	fmt.Printf("\nArgs provided to fileWriteCall \nFlags: %s\nPattern: %s\nFilepath: %s",
+		fileWriteArgs.TestLog, *fileWriteArgs.File, fileWriteArgs.VM)
+
+	err = client.Call("Query.FileWrite", fileWriteArgs, &reply)
+	if err != nil {
+		fmt.Println("Error occurred calling FileWrite with RPC:", err)
+		return "", err
+	}
+
+	return string(reply.Reply), nil
+
 }
 
 func main() {
@@ -63,16 +98,17 @@ func main() {
 	// https://gobyexample.com/waitgroups
 	fmt.Println(currentVM)
 	var wg sync.WaitGroup
+	var reply string
+	var err error
+	for vm, ip := range query.VM_to_IP {
 
-	for vm, ip := range query.Vm_to_ip {
-
-		if vm == current_vm {
-			fmt.Println("Skipping current VM:", vm)
-			continue
-		}
+		// if vm == currentVM {
+		// 	fmt.Println("Skipping current VM:", vm)
+		// 	continue
+		// }
 
 		wg.Go(func() {
-			grepCall(vm, ip)
+			reply, err = grepCall(vm, ip)
 		})
 	}
 	wg.Wait()
