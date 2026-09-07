@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"cs425/mp1/query"
@@ -24,7 +24,7 @@ type GrepArgs struct {
 // Helper function that accepts vm and its ip address as strings. Utilizes GO net/RPC
 // to initiate client-server interaction between the current and target vm. Returns the
 // output of the user-provided grep command from the server.
-func grepCall(vm, flags, pattern, file string) (string, error) {
+func GrepCall(vm, flags, pattern, file string) (string, error) {
 
 	ip := query.VM_to_IP[vm]
 	fmt.Printf("Processing VM at: %s", ip)
@@ -55,7 +55,7 @@ func grepCall(vm, flags, pattern, file string) (string, error) {
 	return string(reply.Reply), nil
 }
 
-func fileWriteCall(testLog, vm, file string) (string, error) {
+func FileWriteCall(testLog, vm, file string) (string, error) {
 	ip := query.VM_to_IP[vm]
 	client, err := rpc.Dial("tcp", string(ip))
 	if err != nil {
@@ -110,7 +110,11 @@ func main() {
 		// }
 
 		wg.Go(func() {
-			reply, err := grepCall(vm, flags, pattern, file)
+			_, err := GrepCall(vm, flags, pattern, file)
+			if err != nil {
+				fmt.Printf("Error when calling %s: %s", vm, err)
+			}
+			// fmt.print(reply)
 		})
 	}
 	wg.Wait()

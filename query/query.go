@@ -36,7 +36,7 @@ type FileWriteArgs struct {
 }
 
 type Reply struct {
-	Reply []byte
+	Reply string
 }
 
 var VM_to_IP = map[string]string{"vm1": "127.0.0.1:8080", "vm2": "127.0.0.1:8001", "vm3": "127.0.0.1:4001"}
@@ -56,7 +56,7 @@ func (query *Query) Grep(args *GrepArgs, reply *Reply) error {
 		fmt.Printf("error when grep: %v", err)
 		return err
 	}
-	reply.Reply = out
+	reply.Reply = string(out)
 	return nil
 }
 

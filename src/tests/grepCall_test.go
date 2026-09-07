@@ -1,6 +1,8 @@
 package main
 
 import (
+	"cs425/mp1/src/client"
+	"fmt"
 	"sync"
 	"testing"
 )
@@ -14,17 +16,18 @@ func RequiredTest(t *testing.T) {
 }
 
 // Simple test
-func SimpleTest(t *testing.T) {
+func TestSimple(t *testing.T) {
+	fmt.Println("HERE")
 	var fileWriteMap = map[string]struct {
 		testString, fileName, expected string
 	}{
-		"vm2": {"Hello, World!\nThis is a required log-querying unit test", "machine.2.log", "1:Hello"},
-		"vm3": {"Other test\nHello test", "machine.3.log"},
+		"vm2": {"Hello, World!\nThis is a required log-querying unit test", "machine.2.log", "1:Hello, World!"},
+		"vm3": {"Other test\nHello test", "machine.3.log", "2:Hello test"},
 	}
 	for vm, tt := range fileWriteMap {
-		fout, err := fileWriteCall(tt.testString, vm, tt.fileName)
+		_, err := client.FileWriteCall(tt.testString, vm, tt.fileName)
 		if err != nil {
-			t.Errorf("Error occurred with fileWriteCall to %s: %w", vm, err)
+			t.Errorf("\nError occurred with fileWriteCall to %s: %s", vm, err)
 		}
 	}
 
@@ -40,11 +43,14 @@ func SimpleTest(t *testing.T) {
 
 	for _, tt := range grepCallTests {
 		wg.Go(func() {
-			reply, err := grepCall(tt.vm, tt.flags, tt.pattern, tt.file)
-
+			reply, err := client.GrepCall(tt.vm, tt.flags, tt.pattern, tt.file)
+			if err != nil {
+				t.Errorf("Error when grepCall: %s", err)
+			}
 			expectedString := fileWriteMap[tt.vm].expected
-			if expectedString != reply {
-				t.Errorf("Expected reply: %s\nReceived reply: %s\n\n", expectedString, reply)
+			if expectedString+string('\n') != reply {
+				fmt.Println(reply)
+				t.Errorf("\nExpected reply: %s\nReceived reply: %s\n\n", expectedString, reply)
 			}
 		})
 	}
