@@ -13,15 +13,21 @@ import (
 // func (t *T) MethodName(argType T1, replyType *T2) error
 // (t *T) a method receiver indicating that the method is made to interact with the type T
 
+// only the server knows the vm_id
+
 func main() {
 	// register type / method here
-	logger.Init()
-
 	queryObj := new(query.Query)
 	rpc.Register(queryObj)
 	curVM := os.Args[1]
 	curIP := query.Vm_to_ip[curVM]
 	listener, err := net.Listen("tcp", curIP)
+
+	// vm_id, err := strconv.Atoi(curVM)
+	// if err != nil {
+	// 	panic(err) // do not surface logging before logger.Init() is called
+	// }
+	logger.Init()
 	if err != nil {
 		logger.Server.Error("Error occurred listening for connection:" + err.Error())
 		return

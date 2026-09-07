@@ -1,7 +1,13 @@
-time=2026-08-31T22:03:55.428-05:00 level=INFO msg="Listening on port: 127.0.0.1:8080" server.component=SERVER
-time=2026-08-31T22:04:17.140-05:00 level=INFO msg="Processing VM at: 127.0.0.1:8080" client.component=CLIENT
-time=2026-08-31T22:04:17.140-05:00 level=INFO msg="Processing VM at: 127.0.0.1:8080" client.component=CLIENT
-time=2026-08-31T22:04:17.143-05:00 level=INFO msg="Args provided to Grep command \nFlags: -n\nPattern: Client\nFilepath: logs/machine.*.log" client.component=CLIENT
-time=2026-08-31T22:04:17.143-05:00 level=INFO msg="Args provided to Grep command \nFlags: -n\nPattern: Client\nFilepath: logs/machine.*.log" client.component=CLIENT
-time=2026-08-31T22:04:17.181-05:00 level=INFO msg="Reply from server: 4:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n5:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n" client.component=CLIENT
-time=2026-08-31T22:04:17.185-05:00 level=INFO msg="Reply from server: 4:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n5:time=2026-08-31T22:04:17.143-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Client\\nFilepath: logs/machine.*.log\" client.component=CLIENT\n" client.component=CLIENT
+time=2026-09-04T17:28:34.127-05:00 level=INFO msg="Listening on port: 127.0.0.1:8080" server.component=SERVER
+time=2026-09-04T17:31:40.820-05:00 level=INFO msg="Iterating through available servers\nmap[vm1:127.0.0.1:8080 vm2:127.0.0.1:4001]" client.component=CLIENT
+time=2026-09-04T17:31:40.820-05:00 level=INFO msg="Processing VM at: 127.0.0.1:4001" client.component=CLIENT
+time=2026-09-04T17:31:40.820-05:00 level=INFO msg="Processing VM at: 127.0.0.1:8080" client.component=CLIENT
+time=2026-09-04T17:31:40.825-05:00 level=ERROR msg="Error occurred connecting to server:dial tcp 127.0.0.1:4001: connect: connection refused" client.component=CLIENT
+time=2026-09-04T17:31:40.828-05:00 level=INFO msg="Args provided to Grep command \nFlags: -n\nPattern: Hello\nFilepath: logs/machine.1.log" client.component=CLIENT
+time=2026-09-04T17:31:40.850-05:00 level=INFO msg="Reply from server: 6:time=2026-09-04T17:31:40.828-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Hello\\nFilepath: logs/machine.1.log\" client.component=CLIENT\n" client.component=CLIENT
+time=2026-09-04T17:36:29.601-05:00 level=INFO msg="Iterating through available servers\nmap[vm1:127.0.0.1:8080 vm2:127.0.0.1:4001]" client.component=CLIENT
+time=2026-09-04T17:36:29.602-05:00 level=INFO msg="Processing VM at: 127.0.0.1:4001" client.component=CLIENT
+time=2026-09-04T17:36:29.602-05:00 level=INFO msg="Processing VM at: 127.0.0.1:8080" client.component=CLIENT
+time=2026-09-04T17:36:29.606-05:00 level=ERROR msg="Error occurred connecting to server:dial tcp 127.0.0.1:4001: connect: connection refused" client.component=CLIENT
+time=2026-09-04T17:36:29.608-05:00 level=INFO msg="Args provided to Grep command \nFlags: -n\nPattern: Hello\nFilepath: logs/machine.1.log" client.component=CLIENT
+time=2026-09-04T17:36:29.619-05:00 level=INFO msg="Reply from server: 6:time=2026-09-04T17:31:40.828-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Hello\\nFilepath: logs/machine.1.log\" client.component=CLIENT\n7:time=2026-09-04T17:31:40.850-05:00 level=INFO msg=\"Reply from server: 6:time=2026-09-04T17:31:40.828-05:00 level=INFO msg=\\\"Args provided to Grep command \\\\nFlags: -n\\\\nPattern: Hello\\\\nFilepath: logs/machine.1.log\\\" client.component=CLIENT\\n\" client.component=CLIENT\n12:time=2026-09-04T17:36:29.608-05:00 level=INFO msg=\"Args provided to Grep command \\nFlags: -n\\nPattern: Hello\\nFilepath: logs/machine.1.log\" client.component=CLIENT\n" client.component=CLIENT

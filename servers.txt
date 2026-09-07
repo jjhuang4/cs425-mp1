@@ -1,3 +1,2 @@
-localhost:8080
-localhost:4001
-localhost:9000
+vm1,127.0.0.1:8080
+vm2,127.0.0.1:4001

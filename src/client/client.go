@@ -3,6 +3,7 @@ package main
 import (
 	"cs425/mp1/logger"
 	"cs425/mp1/query"
+	"fmt"
 	"net/rpc"
 	"os"
 	"sync"
@@ -63,21 +64,16 @@ func main() {
 		logger.Client.Warn("No args provided")
 		return
 	}
-	current_vm := os.Args[2]
+	// current_vm := os.Args[2]
 	// vm_name := os.Args[1]
 	// vm_to_ip[vm_name]
 
 	// https://gobyexample.com/waitgroups
 	var wg sync.WaitGroup
 
+	// Vm_to_ip a string-to-string map that can be replaced with text file based mapping
+	logger.Client.Info("Iterating through available servers\n" + fmt.Sprint(query.Vm_to_ip))
 	for vm, ip := range query.Vm_to_ip {
-
-		if vm == current_vm {
-			// fmt.Println("Skipping current VM:", vm)
-			logger.Client.Info("Skipping current VM:" + vm)
-			continue
-		}
-
 		wg.Go(func() {
 			grepCall(vm, ip)
 		})

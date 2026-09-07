@@ -23,12 +23,14 @@ func LogFile(contents string, vm int) (success bool) {
 	return true
 }
 
+// TODO: test with passing vm_id into Init()
 func Init() error {
 	// init vm_id sometime after
 	var vm_id int = 1
 
 	// open log file in write mode, appending without overwriting existing logs, since this will be used cross-module
 	// also creates file if not exist yet
+	// file, err := os.OpenFile(fmt.Sprintf("logs/machine.%d.log", vm_id),
 	file, err := os.OpenFile(fmt.Sprintf("logs/machine.%d.log", vm_id),
 		os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
